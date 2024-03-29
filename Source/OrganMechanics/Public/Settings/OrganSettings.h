@@ -51,7 +51,7 @@ public:
 	TSoftObjectPtr<UDataTable> OrganTable;
 
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly)
-	TMap<FGameplayAttribute, TSubclassOf<class UGameplayEffect>> GameplayEffect;
+	TMap<FString, TSubclassOf<class UGameplayEffect>> GameplayEffect;
 
 	//Returns the OrganTable
 	static UDataTable* GetDataTable();

@@ -28,8 +28,8 @@ TArray<FName> UOrganSettings::GetOrganNames()
 TSubclassOf<UGameplayEffect> UOrganSettings::GetGameplayEffect(FGameplayAttribute _GameplayAttribute)
 {
 	const UOrganSettings* OSettings = GetDefault<UOrganSettings>();
-
-	return OSettings->GameplayEffect[_GameplayAttribute];
+	FString attributeName = _GameplayAttribute.GetName();
+	return OSettings->GameplayEffect[attributeName];
 }
 
 UTexture2D* UOrganSettings::GetImageTexture(FName _OrganName)
