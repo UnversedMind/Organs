@@ -57,12 +57,13 @@ public:
 	static UDataTable* GetDataTable();
 
 	//Returns an array of OrganNames
-	UFUNCTION()
+	UFUNCTION(BlueprintPure)
 	static TArray<FName> GetOrganNames();
 
 	UFUNCTION(BlueprintPure)
 	static TSubclassOf<class UGameplayEffect> GetGameplayEffect(FGameplayAttribute _GameplayAttribute);
 
+	UFUNCTION(BlueprintPure)
 	//Gets an organ's image texture from the OrganTable config
 	static UTexture2D* GetImageTexture(FName _OrganName);
 
