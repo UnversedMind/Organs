@@ -41,10 +41,10 @@ public:
 
 	virtual class UControlBridge* GetControls_Implementation() override;
 
-	void AddItemToInventory(FInventoryItem _NewItem);
+	void AddItemToInventory(int _Id);
 
 private:
 
-	TArray<FInventoryItem> Inventory;
+	TMap<int, int> InventoryIds;
 		
 };

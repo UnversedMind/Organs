@@ -3,31 +3,34 @@
 
 #include "Inventory/InventoryComponent.h"
 #include "UI/Bridges/StructPropertyBridge.h"
-#include "UI/Bridges/StringPropertyBridge.h"
-#include "UI/Bridges/StructControlBridge.h"
+#include "UI/Bridges/IntPropertyBridge.h"
+#include "UI/Bridges/IntControlBridge.h"
 
 UPropertyBridge* UInventoryComponent::GetData_Implementation() 
 {
 	TMap<FName, UPropertyBridge*> Items;
-	TMap<FName, UPropertyBridge*> ItemDetails;
 	
-	for (FInventoryItem _InventoryItem : Inventory) 
+	for (TPair<int, int> _InventoryItem : InventoryIds) 
 	{
-		Items.Add(FName(_InventoryItem.itemName), UStringPropertyBridge::CreatePropertyBridge(_InventoryItem.itemDescription));
+		
+		//Items.Add(FName(_InventoryItem.itemName), UIntPropertyBridge::CreatePropertyBridge(_InventoryItem.itemDescription));
 	}
 	UPropertyBridge* _Data = UStructPropertyBridge::CreatePropertyBridge(Items);
 	return _Data;
 }
 
-void UInventoryComponent::AddItemToInventory(FInventoryItem _NewItem)
+void UInventoryComponent::AddItemToInventory(int _Id)
 {
-	Inventory.Add(_NewItem);
+	if (InventoryIds.Contains(_Id)) 
+	{
+		InventoryIds[_Id]++;
+		return;
+	}
+	InventoryIds.Add(_Id);
 }
 
 UControlBridge* UInventoryComponent::GetControls_Implementation()
 {
-	UControlBridge* _Controls = UStructControlBridge::CreateControlBridge(this, GET_FUNCTION_NAME_CHECKED_OneParam(UInventoryComponent, AddItemToInventory, FInventoryItem), UStructControlBridge::StaticClass());
-	UStructControlBridge* _StructBridge = Cast<UStructControlBridge>(_Controls);
-	_StructBridge->BindObject<UInventoryComponent, FInventoryItem>(this, &UInventoryComponent::AddItemToInventory);
+	UControlBridge* _Controls = UIntControlBridge::CreateControlBridge(this, GET_FUNCTION_NAME_CHECKED_OneParam(UInventoryComponent, AddItemToInventory, int), UIntControlBridge::StaticClass());
 	return _Controls;
 }
