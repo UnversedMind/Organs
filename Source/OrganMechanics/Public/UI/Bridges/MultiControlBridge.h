@@ -6,6 +6,8 @@
 #include "UI/Bridges/ControlBridge.h"
 #include "MultiControlBridge.generated.h"
 
+DECLARE_DELEGATE(FOnControlExecutionCompleted);
+
 /**
  * 
  */
@@ -16,16 +18,18 @@ class ORGANMECHANICS_API UMultiControlBridge : public UControlBridge
 
 public:
 
-	template<typename T>
-	void log(T obj)
-	{
-		//std::cout << obj;
-	}
+	UPROPERTY(BlueprintReadOnly)
+	TArray<UControlBridge*> Controls;
 
-	template<typename T, typename... Args>
-	void log(T first, Args... args) 
-	{
+	virtual void BindFunction(UObject* _FunctionOwner, FName _FunctionName) override;
 
-	}
-	
+	UFUNCTION(BlueprintPure)
+	UControlBridge* GetBridgeFromIndex(int index);
+
+	UFUNCTION(BlueprintCallable)
+	void CompleteControlExecution();
+
+private:
+
+	FOnControlExecutionCompleted OnControlExecutionCompleted;
 };
