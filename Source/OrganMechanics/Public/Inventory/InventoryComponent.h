@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "UI/DataModelInterface.h"
+#include "Interfaces/DataModelInterface.h"
 #include "InventoryComponent.generated.h"
 
 USTRUCT(BlueprintType)

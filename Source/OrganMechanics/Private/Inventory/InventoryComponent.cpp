@@ -2,9 +2,9 @@
 
 
 #include "Inventory/InventoryComponent.h"
-#include "UI/Bridges/StructPropertyBridge.h"
-#include "UI/Bridges/IntPropertyBridge.h"
-#include "UI/Bridges/IntControlBridge.h"
+#include "Bridges/PropertyBridges/StructPropertyBridge.h"
+#include "Bridges/PropertyBridges/IntPropertyBridge.h"
+#include "Bridges/ControlBridges/IntControlBridge.h"
 
 UPropertyBridge* UInventoryComponent::GetData_Implementation() 
 {

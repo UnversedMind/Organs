@@ -35,6 +35,10 @@
 		{
 			"Name": "InteractionSystem",
 			"Enabled": true
+		},
+		{
+			"Name": "UIDataTraversal",
+			"Enabled": true
 		}
 	]
 }
