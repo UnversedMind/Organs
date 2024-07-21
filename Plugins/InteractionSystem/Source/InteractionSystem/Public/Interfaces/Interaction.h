@@ -16,7 +16,7 @@ class UInteraction : public UInterface
 /**
  * 
  */
-class ORGANMECHANICS_API IInteraction
+class INTERACTIONSYSTEM_API IInteraction
 {
 	GENERATED_BODY()
 

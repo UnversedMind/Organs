@@ -13,7 +13,7 @@ DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnActionPerformed, UInteractionControlle
  * This class is designed to facilitate and simplify interactions
  */
 UCLASS(ClassGroup=(Controllers),meta=(BlueprintSpawnableComponent))
-class ORGANMECHANICS_API UInteractionController : public UActorComponent
+class INTERACTIONSYSTEM_API UInteractionController : public UActorComponent
 {
 	GENERATED_BODY()
 

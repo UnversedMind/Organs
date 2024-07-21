@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_DELEGATE_OneParam(FItemInteractionEvent, UObject*, _Interactable
  * 
  */
 UCLASS(Blueprintable)
-class ORGANMECHANICS_API UInteractionEventSubsystem : public UWorldSubsystem
+class INTERACTIONSYSTEM_API UInteractionEventSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
