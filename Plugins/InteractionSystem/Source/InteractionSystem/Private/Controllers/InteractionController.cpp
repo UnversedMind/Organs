@@ -5,6 +5,7 @@
 
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Controllers/InteractableItemLocator.h"
 
 void UInteractionController::HandleInteraction(AActor* _InteractableItem)
 {
@@ -19,38 +20,14 @@ void UInteractionController::HandleInteraction(AActor* _InteractableItem)
 	Interact(_InteractableItem);
 }
 
-void UInteractionController::SphereTraceFromCamera(FHitResult& _HitResult, bool& _Success, TArray<TEnumAsByte<EObjectTypeQuery>> _ObjectTypes)
+AActor* UInteractionController::GetItemFromItemLocator(bool& _Success)
 {
-	FVector traceStartLocation = GetOwner()->GetActorLocation();
-	FVector cameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetTransformComponent()->GetForwardVector();
-	FVector traceEndLocation = traceStartLocation + (cameraLocation * 300.0f);
-	UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), traceStartLocation, traceEndLocation, 60.0f, _ObjectTypes, false, TArray<AActor*>{},
-		EDrawDebugTrace::None, _HitResult, true);
-	_Success = _HitResult.bBlockingHit;
-}
-
-void UInteractionController::CheckForInteractableItems(FHitResult& _HitResult, bool& _Success, TArray<TEnumAsByte<EObjectTypeQuery>> _ObjectTypes)
-{
-	SphereTraceFromCamera(_HitResult, _Success, _ObjectTypes);
-
-	if (!_Success) 
-	{
-		return;
-	}
-
-	if (!_HitResult.GetActor()) 
+	if (!ItemLocator) 
 	{
 		_Success = false;
-		return;
+		return nullptr;
 	}
-
-	if (!_HitResult.GetActor()->Implements<UInteraction>()) 
-	{
-		_Success = false;
-		return;
-	}
-
-	IInteraction::Execute_CanUserInteract(_HitResult.GetActor(), _Success);
+	return ItemLocator->GetInteractableItem(_Success);
 }
 
 void UInteractionController::Interact(AActor* _InteractableItem)

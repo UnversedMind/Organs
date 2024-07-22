@@ -25,19 +25,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HandleInteraction(AActor* _InteractableItem);
 
-	//Performs a sphere trace from the player character's camera
-	UFUNCTION(BlueprintCallable)
-	void SphereTraceFromCamera(FHitResult& _HitResult, bool& _Success, TArray<TEnumAsByte<EObjectTypeQuery>> _ObjectTypes);
-
-	//Checks for interactable items via sphere trace
-	UFUNCTION(BlueprintCallable)
-	void CheckForInteractableItems(FHitResult& _HitResult, bool& _Success, TArray<TEnumAsByte<EObjectTypeQuery>> _ObjectTypes);
+	UFUNCTION(BlueprintPure)
+	AActor* GetItemFromItemLocator(bool& _Success);
 
 	//Returns the current InteractableItem
 	UFUNCTION(BlueprintPure)
 	UObject* GetInteractableItem();
 
 private:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<class UInteractableItemLocator> ItemLocator;
 
 	//Calls interact on the new AActor parameter
 	void Interact(AActor* _InteractableItem);
