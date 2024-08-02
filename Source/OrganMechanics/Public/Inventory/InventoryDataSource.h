@@ -5,33 +5,11 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Interfaces/DataModelInterface.h"
-#include "InventoryComponent.generated.h"
-
-USTRUCT(BlueprintType)
-struct FInventoryItem 
-{
-	GENERATED_BODY()
-
-	FInventoryItem() 
-	{
-
-	}
-
-	FInventoryItem(FString _Name, FString _Description) 
-	{
-		itemName = _Name;
-		itemDescription = _Description;
-	}
-
-	UPROPERTY(BlueprintReadWrite)
-	FString itemName;
-	UPROPERTY(BlueprintReadWrite)
-	FString itemDescription;
-};
+#include "InventoryDataSource.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class ORGANMECHANICS_API UInventoryComponent : public UActorComponent, public IDataModelInterface
+class ORGANMECHANICS_API UInventoryDataSource : public UActorComponent, public IDataModelInterface
 {
 	GENERATED_BODY()
 

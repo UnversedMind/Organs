@@ -39,6 +39,10 @@
 		{
 			"Name": "UIDataTraversal",
 			"Enabled": true
+		},
+		{
+			"Name": "ItemDatabase",
+			"Enabled": true
 		}
 	]
 }

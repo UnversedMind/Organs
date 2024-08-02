@@ -2,8 +2,8 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
-	"FriendlyName": "InteractionSystem",
-	"Description": "A plugin to simplify interaction events",
+	"FriendlyName": "ItemDatabase",
+	"Description": "A plugin to simplify adding items",
 	"Category": "Other",
 	"CreatedBy": "UnversedMind",
 	"CreatedByURL": "",
@@ -16,7 +16,7 @@
 	"Installed": false,
 	"Modules": [
 		{
-			"Name": "InteractionSystem",
+			"Name": "ItemDatabase",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}
