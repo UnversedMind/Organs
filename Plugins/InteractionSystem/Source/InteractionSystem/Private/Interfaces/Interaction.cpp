@@ -15,9 +15,17 @@ void IInteraction::Interact_Implementation(bool& _Success)
 	_Success = true;
 }
 
+void IInteraction::PostInteract_Implementation()
+{
+}
+
 void IInteraction::StopInteract_Implementation(bool& _Success)
 {
 	_Success = true;
+}
+
+void IInteraction::PostStopInteract_Implementation()
+{
 }
 
 bool IInteraction::IsSingleShotInteraction_Implementation()

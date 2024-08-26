@@ -17,12 +17,4 @@ public:
 
 	virtual class UPropertyBridge* GetData_Implementation() override;
 
-	virtual class UControlBridge* GetControls_Implementation() override;
-
-	void AddItemToInventory(int _Id);
-
-private:
-
-	TMap<int, int> InventoryIds;
-		
 };

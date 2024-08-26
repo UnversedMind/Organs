@@ -32,10 +32,22 @@ public:
 	void Interact(bool& _Success);
 	virtual void Interact_Implementation(bool& _Success);
 
+	//Post interacting, this function can be used for anything that should occur outside of the interaction event,
+	//for example deleting the owner of the function
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void PostInteract();
+	virtual void PostInteract_Implementation();
+
 	//Ends interaction if not single shot
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void StopInteract(bool& _Success);
 	virtual void StopInteract_Implementation(bool& _Success);
+
+	//Post stop interacting, this function can be used for anything that should occur outside of the interaction event,
+	//for example deleting the owner of the function
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void PostStopInteract();
+	virtual void PostStopInteract_Implementation();
 
 	//Returns if the interaction should be a single interaction, or if the interaction should require 
 	//'StopInteract' to be called before the interaction is considered complete

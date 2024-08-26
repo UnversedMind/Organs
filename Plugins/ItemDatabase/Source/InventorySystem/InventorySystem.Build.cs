@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class ItemDatabase : ModuleRules
+public class InventorySystem : ModuleRules
 {
-	public ItemDatabase(ReadOnlyTargetRules Target) : base(Target)
+	public InventorySystem(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -26,7 +26,8 @@ public class ItemDatabase : ModuleRules
 			new string[]
 			{
 				"Core",
-				"DeveloperSettings",
+                "DeveloperSettings",
+				"ItemDatabase",
 				"UnrealEd",
 				// ... add other public dependencies that you statically link with here ...
 			}

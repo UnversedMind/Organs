@@ -36,7 +36,9 @@ void UInteractionController::Interact(AActor* _InteractableItem)
 	IInteraction::Execute_Interact(_InteractableItem, bSuccess);
 
 	OnActionTriggered.Broadcast(this, _InteractableItem, bSuccess);
-	if (IInteraction::Execute_IsSingleShotInteraction(_InteractableItem)) {
+	if (IInteraction::Execute_IsSingleShotInteraction(_InteractableItem)) 
+	{
+		IInteraction::Execute_PostInteract(_InteractableItem);
 		return;
 	}
 	InteractableItem = _InteractableItem;
@@ -46,6 +48,7 @@ void UInteractionController::Interact(AActor* _InteractableItem)
 	{
 		return;
 	}
+	IInteraction::Execute_PostInteract(_InteractableItem);
 	HandleAutomaticInteraction();
 }
 
@@ -60,6 +63,7 @@ void UInteractionController::StopInteract()
 	Timer.Invalidate();
 	IInteraction::Execute_StopInteract(InteractableItem.GetObject(), bSuccess);
 	OnStopActionTriggered.Broadcast(this, InteractableItem.GetObject(), bSuccess);
+	IInteraction::Execute_PostStopInteract(InteractableItem.GetObject());
 	InteractableItem = nullptr;
 }
 
