@@ -4,24 +4,16 @@
 #include "Components/InventoryComponent.h"
 #include "Settings/InventorySettings.h"
 
-void UInventoryComponent::BeginPlay()
-{
-	Super::BeginPlay();
-	InventorySlots.Empty();
-	for (int i = 0; i < MaxInventorySlots; i++) 
-	{
-		InventorySlots.Add(FInventorySlot());
-	}
-}
-
 void UInventoryComponent::AddItemToInventoryAtSlot(FName _ItemName, int _SlotNumber)
 {
 	if (!IsValidSlot(_SlotNumber)) 
 	{
 		return;
 	}
-	InventorySlots[_SlotNumber].ItemName = _ItemName;
-	InventorySlots[_SlotNumber].ItemQuantity += 1;
+	TArray<FInventorySlot>& inventorySlots = GetInventorySlots();
+
+	inventorySlots[_SlotNumber].ItemName = _ItemName;
+	inventorySlots[_SlotNumber].ItemQuantity += 1;
 	OnInventoryUpdated.Broadcast();
 }
 
@@ -45,32 +37,25 @@ void UInventoryComponent::SwapSlotInfo(int _SlotOne, int _SlotTwo)
 		return;
 	}
 
-	FInventorySlot slotInfoOne = InventorySlots[_SlotOne];
-	FInventorySlot slotInfoTwo = InventorySlots[_SlotTwo];
+	TArray<FInventorySlot>& inventorySlots = GetInventorySlots();
+
+	FInventorySlot slotInfoOne = inventorySlots[_SlotOne];
+	FInventorySlot slotInfoTwo = inventorySlots[_SlotTwo];
 	
-	InventorySlots[_SlotOne] = slotInfoOne;
-	InventorySlots[_SlotTwo] = slotInfoTwo;
+	inventorySlots[_SlotOne] = slotInfoOne;
+	inventorySlots[_SlotTwo] = slotInfoTwo;
 	OnInventoryUpdated.Broadcast();
 }
 
 void UInventoryComponent::EmptyInventorySlot(int _SlotNumber)
 {
-	InventorySlots[_SlotNumber] = FInventorySlot();
+	TArray<FInventorySlot>& inventorySlots = GetInventorySlots();
+	inventorySlots[_SlotNumber] = FInventorySlot();
 }
 
-TArray<FInventorySlot> UInventoryComponent::GetInventorySlots()
+TArray<FInventorySlot>& UInventoryComponent::GetInventorySlots()
 {
 	return InventorySlots;
-}
-
-void UInventoryComponent::UseInventoryItem(int _SlotNumber)
-{
-
-}
-
-void UInventoryComponent::ExamineInventoryItem(int _ItemID)
-{
-	
 }
 
 void UInventoryComponent::DiscardInventoryItem(int _SlotNumber)
@@ -80,9 +65,11 @@ void UInventoryComponent::DiscardInventoryItem(int _SlotNumber)
 		return;
 	}
 
-	InventorySlots[_SlotNumber].ItemQuantity -= 1;
+	TArray<FInventorySlot>& inventorySlots = GetInventorySlots();
 
-	if (InventorySlots[_SlotNumber].ItemQuantity <= 0)
+	inventorySlots[_SlotNumber].ItemQuantity -= 1;
+
+	if (inventorySlots[_SlotNumber].ItemQuantity <= 0)
 	{
 		EmptyInventorySlot(_SlotNumber);
 	}
@@ -91,16 +78,50 @@ void UInventoryComponent::DiscardInventoryItem(int _SlotNumber)
 
 FName UInventoryComponent::GetItemAtSlot(int _SlotNumber)
 {
-	if (!InventorySlots.IsValidIndex(_SlotNumber)) 
+	TArray<FInventorySlot>& inventorySlots = GetInventorySlots();
+	if (!inventorySlots.IsValidIndex(_SlotNumber))
 	{
 		return FName();
 	}
-	return InventorySlots[_SlotNumber].ItemName;
+	return inventorySlots[_SlotNumber].ItemName;
+}
+
+void UInventoryComponent::ClearInventorySlots()
+{
+	TArray<FInventorySlot>& inventorySlots = GetInventorySlots();
+	inventorySlots.Empty();
+}
+
+void UInventoryComponent::AddInventorySlot()
+{
+	TArray<FInventorySlot>& inventorySlots = GetInventorySlots();
+	inventorySlots.Add(FInventorySlot());
+}
+
+void UInventoryComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	for (int i = 0; i < DefaultItemSlots.Num(); i++)
+	{
+		if (!IsValidSlot(i))
+		{
+			AddInventorySlot();
+		}
+		for (int a = 0; a < DefaultItemSlots[i].ItemQuantity; a++) 
+		{
+			if (!IsValidSlot(i + a))
+			{
+				AddInventorySlot();
+			}
+			AddItemToInventoryAtNextAvailableSlot(DefaultItemSlots[i].ItemName);
+		}
+	}
 }
 
 bool UInventoryComponent::IsValidSlot(int _SlotNumber)
 {
-	return InventorySlots.IsValidIndex(_SlotNumber);
+	TArray<FInventorySlot>& inventorySlots = GetInventorySlots();
+	return inventorySlots.IsValidIndex(_SlotNumber);
 }
 
 int UInventoryComponent::GetNextEmptySlot()
@@ -121,12 +142,16 @@ int UInventoryComponent::GetNextAvailableSlotForStackableItem(FName _ItemName)
 int UInventoryComponent::GetSlotFromItemName(FName _ItemName)
 {
 	int slotIndex = -1;
-	for (int i = 0; i < InventorySlots.Num(); i++) 
+	TArray<FInventorySlot>& inventorySlots = GetInventorySlots();
+	for (int i = 0; i < inventorySlots.Num(); i++) 
 	{
-		if (InventorySlots[i].ItemName == _ItemName)
+		if (inventorySlots[i].ItemName == _ItemName)
 		{
-			slotIndex = i;
-			break;
+			if (inventorySlots[i].ItemQuantity < UInventorySettings::GetStackLimit(_ItemName)) 
+			{
+				slotIndex = i;
+				break;
+			}
 		}
 	}
 	return slotIndex;

@@ -14,3 +14,15 @@ bool UInventorySettings::IsStackableItem(FName _ItemName)
 	}
 	return false;
 }
+
+int UInventorySettings::GetStackLimit(FName _ItemName)
+{
+	if (!UInventorySettings::IsStackableItem(_ItemName)) 
+	{
+		return 1;
+	}
+	UInventorySettings* inventorySettings = const_cast<UInventorySettings*>(GetDefault<UInventorySettings>());
+
+	int stackLimit = *inventorySettings->StackableItemsList.Find(_ItemName);
+	return stackLimit;
+}

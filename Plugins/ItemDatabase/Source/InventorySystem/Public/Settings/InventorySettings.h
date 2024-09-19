@@ -16,8 +16,12 @@ class INVENTORYSYSTEM_API UInventorySettings : public UDeveloperSettings
 
 public:
 
+	// Returns if the item is a stackable item
 	static bool IsStackableItem(FName _ItemName);
 
-	UPROPERTY(EditAnywhere, Config, BlueprintReadOnly, meta = (GetOptions = "ItemDatabase.ItemSettings.GetItemNames"))
-	TArray<FName> StackableItemsList;
+	static int GetStackLimit(FName _ItemName);
+
+	// A list of items which can be stacked, and the amount they can be stacked up to
+	UPROPERTY(EditAnywhere, Config, BlueprintReadOnly, meta = (GetKeyOptions = "ItemDatabase.ItemSettings.GetItemNames"))
+	TMap<FName, int> StackableItemsList;
 };

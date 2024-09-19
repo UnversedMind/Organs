@@ -2,6 +2,8 @@
 
 
 #include "Settings/ItemSettings.h"
+#include "Settings/FunctionSettings.h"
+#include "Functions/FunctionInfo.h"
 #include "ItemData/ItemData.h"
 
 FItemDataInternal UItemSettings::GetItemVariablesFromType(FName _ItemType)
@@ -13,17 +15,6 @@ FItemDataInternal UItemSettings::GetItemVariablesFromType(FName _ItemType)
 		return FItemDataInternal();
 	}
 	return itemSettings->ItemTypeToDefaultVariables[_ItemType];
-}
-
-FFunctionList UItemSettings::GetFunctionListFromType(FName _ItemType)
-{
-	const UItemSettings* itemSettings = GetDefault<UItemSettings>();
-
-	if (!itemSettings->ItemTypeToDefaultFunctionList.Contains(_ItemType))
-	{
-		return FFunctionList();
-	}
-	return itemSettings->ItemTypeToDefaultFunctionList[_ItemType];
 }
 
 TArray<FName> UItemSettings::GetItemDataTypeNames()
@@ -43,7 +34,7 @@ TArray<FName> UItemSettings::GetItemNames()
 	TArray<FName> itemNames;
 
 	UItemSettings* itemSettings = const_cast<UItemSettings*>(GetDefault<UItemSettings>());
-	const UDataTable* dataTable = itemSettings->GetDataTable();
+	const UDataTable* dataTable = itemSettings->GetItemDataTable();
 
 	if (!dataTable) 
 	{
@@ -54,17 +45,10 @@ TArray<FName> UItemSettings::GetItemNames()
 	return itemNames;
 }
 
-TArray<FName> UItemSettings::GetFunctionNames()
-{
-	UItemSettings* itemSettings = const_cast<UItemSettings*>(GetDefault<UItemSettings>());
-
-	return itemSettings->ItemFunctionNames;
-}
-
 FItemData UItemSettings::GetItemDataFromName(FName _ItemName)
 {
 	UItemSettings* itemSettings = const_cast<UItemSettings*>(GetDefault<UItemSettings>());
-	UDataTable* dataTable = const_cast<UDataTable*>(itemSettings->GetDataTable());
+	UDataTable* dataTable = const_cast<UDataTable*>(itemSettings->GetItemDataTable());
 
 	if (!dataTable)
 	{
@@ -77,24 +61,39 @@ FItemData UItemSettings::GetItemDataFromName(FName _ItemName)
 	}
 	FItemData itemData = FItemData();
 	itemData = *dataTable->FindRow<FItemData>(_ItemName, FString());
+
 	return itemData;
+}
+
+FFunctionInfo UItemSettings::GetFunctionInfoFromIdentifierRelevantToItem(FName _FunctionIdentifier, FItemData _ItemData, FName& _FunctionName)
+{
+	if (!_ItemData.FunctionList.Contains(_FunctionIdentifier)) 
+	{
+		return FFunctionInfo();
+	}
+	_FunctionName = _ItemData.FunctionList[_FunctionIdentifier];
+
+	FFunctionInfo functionInfo = UFunctionSettings::GetFunctionInfoFromIdentifier(_FunctionIdentifier);
+	functionInfo.PopulateConditionalInfo(_ItemData.AdditionalFunctionData[_FunctionIdentifier].ConditionalData);
+	functionInfo.PopulateExecutableInfo(_ItemData.AdditionalFunctionData[_FunctionIdentifier].ExecutableData);
+	return functionInfo;
 }
 
 UItemSettings::UItemSettings()
 {
-	LoadDataTable();
+	LoadItemDataTable();
 }
 
-void UItemSettings::LoadDataTable()
+void UItemSettings::LoadItemDataTable()
 {
 	ItemListInstance = ItemList.LoadSynchronous();
 }
 
-const UDataTable* UItemSettings::GetDataTable()
+const UDataTable* UItemSettings::GetItemDataTable()
 {
 	if (!ItemListInstance) 
 	{
-		LoadDataTable();
+		LoadItemDataTable();
 	}
 	return ItemListInstance;
 }

@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class ItemDatabase : ModuleRules
+public class FunctionDatabase : ModuleRules
 {
-	public ItemDatabase(ReadOnlyTargetRules Target) : base(Target)
+	public FunctionDatabase(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -27,8 +27,6 @@ public class ItemDatabase : ModuleRules
 			{
 				"Core",
 				"DeveloperSettings",
-				"UnrealEd",
-				"FunctionDatabase"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

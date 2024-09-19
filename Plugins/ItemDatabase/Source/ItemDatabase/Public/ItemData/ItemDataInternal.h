@@ -16,6 +16,6 @@ struct FItemDataInternal
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (GetKeyOptions = "ItemDatabase.ItemSettings.GetItemDataTypeNames"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ForceInlineRow, NoResetToDefault, ShowOnlyInnerProperties, FullyExpand = "true"))
 	TMap<FName, float> AdditionalData;
 };
