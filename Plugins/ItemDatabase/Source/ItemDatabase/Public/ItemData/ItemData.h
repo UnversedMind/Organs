@@ -43,7 +43,7 @@ public:
 	FItemDataInternal AdditionalData;
 
 	//The list of functions that this item can execute
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (GetValueOptions = "FunctionDatabase.FunctionSettings.GetFunctionIdentifiers"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (GetKeyOptions = "FunctionDatabase.FunctionSettings.GetFunctionIdentifiers"))
 	TMap<FName, FName> FunctionList;
 
 	//The item's list of additional data per function (e.g. HP:50.0f)

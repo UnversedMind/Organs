@@ -32,7 +32,7 @@ void FItemData::UpdateAdditionalDataFromItemType()
 void FItemData::PopulateAdditionalFunctionData()
 {
 	TArray<FName> functionIdentifiers;
-	FunctionList.GenerateValueArray(functionIdentifiers);
+	FunctionList.GenerateKeyArray(functionIdentifiers);
 	if (!functionIdentifiers.IsValidIndex(0)) 
 	{
 		AdditionalFunctionData.Empty();
