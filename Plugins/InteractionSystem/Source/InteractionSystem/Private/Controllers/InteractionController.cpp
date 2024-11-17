@@ -17,6 +17,10 @@ void UInteractionController::HandleInteraction(AActor* _InteractableItem)
 		}
 		return;
 	}
+	if (!_InteractableItem) 
+	{
+		return;
+	}
 	Interact(_InteractableItem);
 }
 
