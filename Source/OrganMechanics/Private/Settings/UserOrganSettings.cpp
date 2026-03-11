@@ -2,25 +2,11 @@
 
 
 #include "Settings/UserOrganSettings.h"
+#include "Manager/ProgressManagerSubsystem.h"
 
 UUserOrganSettings* UUserOrganSettings::GetUserOrganSettings()
 {
     return Cast<UUserOrganSettings>(UGameUserSettings::GetGameUserSettings());
-}
-
-bool UUserOrganSettings::GetIsOrganUnlocked(FName _OrganName)
-{
-    return *IsOrganUnlocked.Find(_OrganName);
-}
-
-void UUserOrganSettings::AddOrgan(FName _OrganName, bool _IsUnlocked)
-{
-    IsOrganUnlocked.Add(_OrganName, _IsUnlocked);
-}
-
-void UUserOrganSettings::UnlockOrgan(FName _OrganName)
-{
-    AddOrgan(_OrganName, true);
 }
 
 FName UUserOrganSettings::GetHotKeyOrgan(EOrganType _OrganType)
@@ -28,9 +14,10 @@ FName UUserOrganSettings::GetHotKeyOrgan(EOrganType _OrganType)
     return *OrganHotKeys.Find(_OrganType);
 }
 
-void UUserOrganSettings::SetOrganHotKey(EOrganType _OrganType, FName _OrganName)
+void UUserOrganSettings::SetOrganHotKey(EOrganType _OrganType, FName _OrganName, UObject* WorldContextObject)
 {
-    if (!GetIsOrganUnlocked(_OrganName)) 
+    UProgressManagerSubsystem* progressManager = UProgressManagerSubsystem::GetProgressManager(WorldContextObject);
+    if (!progressManager->GetIsOrganUnlocked(_OrganName)) 
     {
         return;
     }

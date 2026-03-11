@@ -6,6 +6,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "BlueprintExtenderFunctionLibrary.generated.h"
 
+class USoundWave;
+
 /**
  * Additional blueprint functions
  */
@@ -19,5 +21,8 @@ public:
 	//Converts camel case to text with spaces (e.g. CamelCase would become Camel Case)
 	UFUNCTION(BlueprintPure)
 	static FString ConvertCamelCaseToSpaces(FString _InputString);
+
+	UFUNCTION(BlueprintCallable)
+	static void ImportFile(const FString& filePath);
 	
 };

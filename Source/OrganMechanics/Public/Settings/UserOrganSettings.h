@@ -23,29 +23,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static UUserOrganSettings* GetUserOrganSettings();
 
-	//Keeps track of which organs are unlocked
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TMap<FName, bool> IsOrganUnlocked;
-
-	//Returns if the specified organ is unlocked
-	UFUNCTION(BlueprintPure)
-	bool GetIsOrganUnlocked(FName _OrganName);
-
-	//Adds the organ to IsOrganUnlocked map
-	UFUNCTION(BlueprintCallable)
-	void AddOrgan(FName _OrganName, bool _IsUnlocked);
-
-	//Unlocks the organ
-	UFUNCTION(BlueprintCallable)
-	void UnlockOrgan(FName _OrganName);
-
 	//Returns the name of the organ at the specified hotkey type
 	UFUNCTION(BlueprintPure)
 	FName GetHotKeyOrgan(EOrganType _OrganType);
 
 	//Sets the organ to be linked to the relevant hotkey
-	UFUNCTION(BlueprintCallable)
-	void SetOrganHotKey(EOrganType _OrganType, FName _OrganName);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext = "WorldContextObject", CallableWithoutWorldContext))
+	void SetOrganHotKey(EOrganType _OrganType, FName _OrganName, UObject* WorldContextObject);
 
 	//Called when the organ assigned to a hotkey is changed
 	UPROPERTY(BlueprintAssignable)

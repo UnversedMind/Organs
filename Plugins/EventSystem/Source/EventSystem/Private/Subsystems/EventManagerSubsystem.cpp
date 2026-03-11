@@ -12,7 +12,7 @@ void UEventManagerSubsystem::ExecuteEvent(UEventBase* _EventToExecute, const UOb
 
 void UEventManagerSubsystem::ExecuteEventOfClass(TSubclassOf<UEventBase> _EventClass, UObject* _Outer, const UObject* WorldContextObject)
 {
-	UEventBase* _EventToExecute = NewObject<UEventBase>(_Outer, _EventClass->StaticClass());
+	UEventBase* _EventToExecute = NewObject<UEventBase>(_Outer, _EventClass);
 	UEventManagerSubsystem::ExecuteEvent(_EventToExecute, WorldContextObject);
 }
 

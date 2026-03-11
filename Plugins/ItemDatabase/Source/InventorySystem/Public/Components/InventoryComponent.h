@@ -49,6 +49,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddItemToInventoryAtNextAvailableSlot(FName _ItemName);
 
+	//Sets inventory slots - this can be used for loading purposes
+	UFUNCTION(BlueprintCallable)
+	void SetInventorySlots(TArray<FInventorySlot> _ItemSlots);
+
 	//Moves item from SlotOne to SlotTwo, and item from SlotTwo to SlotOne
 	UFUNCTION(BlueprintCallable)
 	void SwapSlotInfo(int _SlotOne, int _SlotTwo);

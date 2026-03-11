@@ -6,7 +6,9 @@
 #include "AbilitySystemComponent.h"
 #include "Characters/CharacterAttributeSet.h"
 #include "Settings/UserOrganSettings.h"
+#include "Kismet/GameplayStatics.h"
 #include "Organs/OrganBaseAttributeSet.h"
+#include "Manager/ProgressManagerSubsystem.h"
 
 TArray<class AOrganBase*> AOrgansCharacter::GetOrgans()
 {
@@ -24,10 +26,20 @@ void AOrgansCharacter::BeginPlay()
         Organs.Add(newOrgan);
         newOrgan->OnAttachToActor();
 
-        _Settings->AddOrgan(newOrgan->GetOrganName(), newOrgan->GetStartUnlocked());
-        _Settings->SetOrganHotKey(newOrgan->GetOrganType(), newOrgan->GetOrganName());
+        UProgressManagerSubsystem* progressManager = UProgressManagerSubsystem::GetProgressManager(this);
+        if (!progressManager->HasOrganInMap(newOrgan->GetOrganName())) 
+        {
+            progressManager->AddOrgan(newOrgan->GetOrganName(), newOrgan->GetStartUnlocked());
+            _Settings->SetOrganHotKey(newOrgan->GetOrganType(), newOrgan->GetOrganName(), this);
+        }
     }
-    SetActiveOrgan(_Settings->GetHotKeyOrgan(EOrganType::Respiratory));
+
+    if (GetActiveOrganName() == FName()) 
+    {
+        SetActiveOrgan(_Settings->GetHotKeyOrgan(EOrganType::Respiratory));
+        return;
+    }
+    SetActiveOrgan(GetActiveOrganName());
 }
 
 void AOrgansCharacter::Tick(float DeltaSeconds)

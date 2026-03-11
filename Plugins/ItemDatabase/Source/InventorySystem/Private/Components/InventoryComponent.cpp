@@ -30,6 +30,11 @@ void UInventoryComponent::AddItemToInventoryAtNextAvailableSlot(FName _ItemName)
 	AddItemToInventoryAtSlot(_ItemName, nextAvailableSlot);
 }
 
+void UInventoryComponent::SetInventorySlots(TArray<FInventorySlot> _ItemSlots)
+{
+	InventorySlots = _ItemSlots;
+}
+
 void UInventoryComponent::SwapSlotInfo(int _SlotOne, int _SlotTwo)
 {
 	if (!IsValidSlot(_SlotOne) || !IsValidSlot(_SlotTwo)) 

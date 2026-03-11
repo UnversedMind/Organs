@@ -2,6 +2,7 @@
 
 
 #include "Libraries/BlueprintExtenderFunctionLibrary.h"
+#include "MediaPlayer.h"
 
 FString UBlueprintExtenderFunctionLibrary::ConvertCamelCaseToSpaces(FString _InputString)
 {
@@ -21,4 +22,15 @@ FString UBlueprintExtenderFunctionLibrary::ConvertCamelCaseToSpaces(FString _Inp
 		returnString.AppendChar(charArray[i]);
 	}
 	return returnString;
+}
+
+void UBlueprintExtenderFunctionLibrary::ImportFile(const FString& filePath)
+{
+	UMediaPlayer* _MediaPlayer = NewObject<UMediaPlayer>();
+
+	if (!_MediaPlayer)
+	{
+		return;
+	}
+	_MediaPlayer->OpenFile(filePath);
 }

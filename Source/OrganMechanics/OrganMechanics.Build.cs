@@ -8,7 +8,7 @@ public class OrganMechanics : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "GameplayAbilities", "GameplayTags", "GameplayTasks", "UMG", "PropertyPath", "BlueprintGraph", "GraphEditor", "ToolMenus", "UnrealEd", "InteractionSystem", "UIDataTraversal" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "GameplayAbilities", "GameplayTags", "GameplayTasks", "UMG", "PropertyPath", "BlueprintGraph", "GraphEditor", "ToolMenus", "UnrealEd", "InteractionSystem", "UIDataTraversal", "MediaAssets" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
