@@ -24,16 +24,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TEnumAsByte<EModifierType> FunctionType;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (EditCondition = "FunctionType!=EModifierType::Insert"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (GetOptions = "DialogueSystem.DialogueSettings.GetCharacterNames"))
 	FName CharacterName;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (EditCondition = "FunctionType!=EModifierType::Insert"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName AttributeToAffect;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (EditCondition = "FunctionType!=EModifierType::Insert"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float Value;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (EditCondition = "FunctionType==EModifierType::Insert"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (RequiredAssetDataTags = "RowStructure=/Script/DialogueSystem.DialogueStruct"))
 	TObjectPtr<UDataTable> DataTableToImport;
 };
 
@@ -59,6 +59,6 @@ public:
 	FString CharacterText;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TArray<FDialogueOptionEffect> Options;
+	TMap<FString, FDialogueOptionEffect> Options;
 		
 };

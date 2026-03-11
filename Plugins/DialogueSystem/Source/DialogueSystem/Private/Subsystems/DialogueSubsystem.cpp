@@ -10,6 +10,13 @@ void UDialogueSubsystem::AcceptDialogue(UDataTable* _DataTable)
 	_DataTable->GetAllRows<FDialogueStruct>(FString(""), StackedDialogue);
 }
 
+void UDialogueSubsystem::InsertDialogue(UDataTable* _DataTable)
+{
+	TArray<FDialogueStruct*> dialogueToInsert;
+	_DataTable->GetAllRows<FDialogueStruct>(FString(""), dialogueToInsert);
+	StackedDialogue.Insert(dialogueToInsert, (CurrentDialogue+1));
+}
+
 void UDialogueSubsystem::ProgressDialogue()
 {
 	CurrentDialogue++;
@@ -19,6 +26,23 @@ void UDialogueSubsystem::ProgressDialogue()
 		return;
 	}
 	OnDialogueProgressed.Broadcast();
+}
+
+bool UDialogueSubsystem::DoesCurrentDialogueHaveChoices()
+{
+	FDialogueStruct dialogueStruct = GetCurrentDialogue();
+	if (dialogueStruct.Options.IsEmpty()) {
+		return false;
+	}
+	return true;
+}
+
+void UDialogueSubsystem::OnChoiceSelected(FDialogueOptionEffect _ChoiceSelected)
+{
+	if (_ChoiceSelected.FunctionType == EModifierType::Insert) {
+		InsertDialogue(_ChoiceSelected.DataTableToImport);
+	}
+	ProgressDialogue();
 }
 
 FDialogueStruct UDialogueSubsystem::GetCurrentDialogue()

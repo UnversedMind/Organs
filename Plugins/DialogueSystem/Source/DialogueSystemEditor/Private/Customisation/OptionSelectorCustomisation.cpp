@@ -53,7 +53,7 @@ void FOptionSelectorCustomization::CustomizeChildren(TSharedRef<IPropertyHandle>
 
 	FString _FunctionValue;
 	FunctionTypePropertyHandle->GetValueAsDisplayString(_FunctionValue);
-
+	
 	StructBuilder.AddCustomRow(LOCTEXT("DialogueOptionEffectRow", "DialogueOptionEffect"))
 		[
 			SNew(SHorizontalBox)
@@ -74,62 +74,77 @@ void FOptionSelectorCustomization::CustomizeChildren(TSharedRef<IPropertyHandle>
 						.Font(IDetailLayoutBuilder::GetDetailFontBold())
 				]
 				+ SHorizontalBox::Slot()
-				.AutoWidth()
-				.VAlign(EVerticalAlignment::VAlign_Center)
 				[
-					CharacterPropertyHandle->CreatePropertyValueWidget()
+					SNew(SHorizontalBox)
+						.Visibility_Lambda([FunctionTypePropertyHandle]()
+							{
+								FString _FunctionValue;
+								FunctionTypePropertyHandle->GetValueAsDisplayString(_FunctionValue);
+								if (_FunctionValue == "Insert") {
+									return EVisibility::Collapsed;
+								}
+								return EVisibility::Visible;
+							})
+							+SHorizontalBox::Slot()
+								.AutoWidth()
+								.VAlign(EVerticalAlignment::VAlign_Center)
+								[
+									CharacterPropertyHandle->CreatePropertyValueWidget()
+								]
+								+ SHorizontalBox::Slot()
+								.AutoWidth()
+								.VAlign(EVerticalAlignment::VAlign_Center)
+								.Padding(5, 0)
+								[
+									SNew(STextBlock)
+										.Text(LOCTEXT("'s ", "'s "))
+										.Font(IDetailLayoutBuilder::GetDetailFontBold())
+								]
+								+ SHorizontalBox::Slot()
+								.AutoWidth()
+								.VAlign(EVerticalAlignment::VAlign_Center)
+								[
+									AttributePropertyHandle->CreatePropertyValueWidget()
+								]
+								+ SHorizontalBox::Slot()
+								.AutoWidth()
+								.VAlign(EVerticalAlignment::VAlign_Center)
+								.Padding(5, 0)
+								[
+									SNew(STextBlock)
+										.Text(MakeAttributeLambda([this] {return TextValue; }))
+										.Font(IDetailLayoutBuilder::GetDetailFontBold())
+								]
+								+ SHorizontalBox::Slot()
+								.AutoWidth()
+								.VAlign(EVerticalAlignment::VAlign_Center)
+								[
+									ValuePropertyHandle->CreatePropertyValueWidget()
+								]
 				]
 				+ SHorizontalBox::Slot()
-				.AutoWidth()
-				.VAlign(EVerticalAlignment::VAlign_Center)
-				.Padding(5, 0)
 				[
-					SNew(STextBlock)
-						.Text(LOCTEXT("'s ", "'s "))
-						.Font(IDetailLayoutBuilder::GetDetailFontBold())
+					SNew(SHorizontalBox)
+						.Visibility_Lambda([FunctionTypePropertyHandle]()
+							{
+								FString _FunctionValue;
+								FunctionTypePropertyHandle->GetValueAsDisplayString(_FunctionValue);
+								if (_FunctionValue != "Insert") {
+									return EVisibility::Collapsed;
+								}
+								return EVisibility::Visible;
+							})
+						+ SHorizontalBox::Slot()
+								.AutoWidth()
+								.VAlign(EVerticalAlignment::VAlign_Center)
+								[
+									DTPropertyHandle->CreatePropertyValueWidget()
+								]
 				]
-				+ SHorizontalBox::Slot()
-				.AutoWidth()
-				.VAlign(EVerticalAlignment::VAlign_Center)
-				[
-					AttributePropertyHandle->CreatePropertyValueWidget()
-				]
-				+ SHorizontalBox::Slot()
-				.AutoWidth()
-				.VAlign(EVerticalAlignment::VAlign_Center)
-				.Padding(5, 0)
-				[
-					SNew(STextBlock)
-						.Text(MakeAttributeLambda([this] {return TextValue; }))
-						.Font(IDetailLayoutBuilder::GetDetailFontBold())
-				]
-				+ SHorizontalBox::Slot()
-				.AutoWidth()
-				.VAlign(EVerticalAlignment::VAlign_Center)
-				[
-					ValuePropertyHandle->CreatePropertyValueWidget()
-				]
-		];
-	StructBuilder.AddCustomRow(LOCTEXT("DialogueOptionEffectRow2", "DialogueOptionEffect2"))
-		[
-			SNew(SHorizontalBox)
-				+ SHorizontalBox::Slot()
-				.AutoWidth()
-				.VAlign(EVerticalAlignment::VAlign_Center)
-				.Padding(5, 0)
-				[
-					SNew(STextBlock)
-						.Text(LOCTEXT("Insert ", "Insert "))
-						.Font(IDetailLayoutBuilder::GetDetailFontBold())
-				]
-				+ SHorizontalBox::Slot()
-				.AutoWidth()
-				.VAlign(EVerticalAlignment::VAlign_Center)
-				[
-					DTPropertyHandle->CreatePropertyValueWidget()
-				]
-		];
 
+
+
+		];
 #endif
 }
 

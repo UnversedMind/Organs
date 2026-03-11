@@ -23,8 +23,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AcceptDialogue(UDataTable* _DataTable);
 
+	void InsertDialogue(UDataTable* _DataTable);
+
 	UFUNCTION(BlueprintCallable)
 	void ProgressDialogue();
+
+	UFUNCTION(BlueprintPure)
+	bool DoesCurrentDialogueHaveChoices();
+
+	UFUNCTION(BlueprintCallable)
+	void OnChoiceSelected(FDialogueOptionEffect _ChoiceSelected);
 
 	UFUNCTION(BlueprintPure)
 	FDialogueStruct GetCurrentDialogue();
